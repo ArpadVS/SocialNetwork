@@ -5,7 +5,7 @@ import play.api.libs.json._
 import play.api.mvc._
 import services.PostService
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 import javax.inject._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,7 +37,7 @@ class PostController @Inject()(
         Future.successful(BadRequest("Error!"))
       },
       data => {
-        val newPost = Post(0, data.userId, data.text, data.likes, LocalDateTime.now())
+        val newPost = Post(0, data.userId, data.text, data.likes, LocalDate.now())
         // change redirect later to 200 Ok
         postService.addItem(newPost).map(_ => Redirect(routes.PostController.getAll))
       })
@@ -52,7 +52,7 @@ class PostController @Inject()(
       },
       data => {
 
-        val postItem = Post(id, data.userId, data.text, data.likes, LocalDateTime.now())
+        val postItem = Post(id, data.userId, data.text, data.likes, LocalDate.now())
         // change redirect later to 200 Ok
         postService.updateItem(postItem).map(_ => Redirect(routes.PostController.getAll))
       })

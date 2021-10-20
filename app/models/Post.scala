@@ -7,10 +7,10 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
 
-case class Post(id: Long, userId: Long, text: String, likes: Int, created: LocalDateTime)
+case class Post(id: Long, userId: Long, text: String, likes: Int, created: LocalDate)
 
 case class PostFormData(userId: Long, text: String, likes: Int)
 
@@ -33,7 +33,7 @@ class PostTableDef(tag: Tag) extends Table[Post](tag, "Post") {
 
   def likes = column[Int]("likes")
 
-  def created = column[LocalDateTime]("created")
+  def created = column[LocalDate]("created")
 
   override def * = (id, userId, text, likes, created) <> (Post.tupled, Post.unapply)
 }

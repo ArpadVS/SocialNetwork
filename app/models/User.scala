@@ -27,7 +27,7 @@ object UserForm {
   )
 }
 
-class UserTableDef(tag: Tag) extends Table[User](tag, "User") {
+class UserTableDef(tag: Tag) extends Table[User](tag, "users") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def email = column[String]("email", O.Unique)
   def password = column[String]("password")
@@ -50,7 +50,7 @@ class UserList @Inject()(
   def add(userItem: User): Future[String] = {
     dbConfig.db
       .run(userList += userItem)
-      .map(res => "User registered succesfully" + res)
+      .map(_ => "User registered successfully")
       .recover {
         case ex: Exception =>
           printf(ex.getMessage)

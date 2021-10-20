@@ -24,10 +24,10 @@ object PostForm {
   )
 }
 
-class PostTableDef(tag: Tag) extends Table[Post](tag, "Post") {
+class PostTableDef(tag: Tag) extends Table[Post](tag, "posts") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-  def userId = column[Long]("userId")
+  def userId = column[Long]("user_id")
 
   def text = column[String]("text")
 
@@ -36,6 +36,9 @@ class PostTableDef(tag: Tag) extends Table[Post](tag, "Post") {
   def created = column[LocalDate]("created")
 
   override def * = (id, userId, text, likes, created) <> (Post.tupled, Post.unapply)
+
+  val authors = TableQuery[UserTableDef]
+  def author = foreignKey("user_fk", userId, authors)(_.id)
 }
 
 

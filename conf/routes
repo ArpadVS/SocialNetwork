@@ -16,6 +16,7 @@ GET     /api/posts/status           controllers.PostController.checkStatus()
 
 #users and authentication
 POST /api/auth/register             controllers.AuthenticationController.register
+POST /api/auth/login             controllers.AuthenticationController.login
 GET  /api/users                     controllers.AuthenticationController.getAllUsers
 GET  /api/users/:id               controllers.AuthenticationController.getUserById(id:Long)
 

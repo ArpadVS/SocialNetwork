@@ -4,6 +4,7 @@ import models.{Post, PostForm}
 import play.api.libs.json._
 import play.api.mvc._
 import services.PostService
+import utils.AuthenticatedAction
 
 import java.time.LocalDate
 import javax.inject._

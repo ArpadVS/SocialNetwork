@@ -1,12 +1,13 @@
 package controllers
 
-import models.{User, UserForm, LoginFormData}
+import models.{LoginFormData, User, UserForm}
+import play.api.data.Form
+import play.api.data.Forms._
 import play.api.libs.json.{Json, OFormat}
 import play.api.mvc._
 import services.UserService
-import utils.BcryptHashHelper
-import play.api.data.Form
-import play.api.data.Forms._
+import utils.{BcryptHashHelper, AuthenticatedAction, JwtUtil}
+import scala.util.parsing.json._
 
 import java.time.LocalDate
 import javax.inject.Inject
@@ -15,7 +16,8 @@ import scala.concurrent.Future
 
 class AuthenticationController @Inject()(
                                           cc: ControllerComponents,
-                                          userService: UserService) extends AbstractController(cc) {
+                                          userService: UserService,
+                                          authenticatedAction: AuthenticatedAction) extends AbstractController(cc) {
 
   implicit val userFormat: OFormat[User] = Json.format[User]
 
@@ -33,17 +35,24 @@ class AuthenticationController @Inject()(
         Future.successful(BadRequest("Form data in invalid!"))
       },
       data => {
-        if (userService.tryLogin(data)){
-          userService.findByEmail(data.email).map{ loggedInUser =>
+        if (userService.tryLogin(data)) {
+          userService.findByEmail(data.email).map { loggedInUser =>
             loggedInUser.password = ""
-            Ok(Json.toJson(loggedInUser))
+            val payLoad: String = s"""{"email": "${loggedInUser.email}", "id": ${loggedInUser.id}}"""
+            val token: String = JwtUtil.createToken(payLoad)
+            println("Logged in as user" + loggedInUser)
+            Ok(token)
           }
-        }else{
+        } else {
           println("Login not successful")
           Future.successful(BadRequest("Invalid email or password"))
         }
       }
     )
+  }
+
+  def testAuth: Action[AnyContent] = authenticatedAction { implicit request: Request[AnyContent] =>
+    Ok("Successful API call")
   }
 
   def register: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
@@ -69,7 +78,8 @@ class AuthenticationController @Inject()(
       })
   }
 
-  def getAllUsers: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+
+  def getAllUsers: Action[AnyContent] = authenticatedAction.async { implicit request: Request[AnyContent] =>
     userService.listAllItems.map { item =>
       item.foreach(u => u.password = "")
       Ok(Json.toJson(item))

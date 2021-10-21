@@ -8,15 +8,16 @@ GET     /                           controllers.HomeController.index()
 
 #posts
 GET     /api/posts                  controllers.PostController.getAll
+GET     /api/posts/status           controllers.PostController.checkStatus()
 GET     /api/posts/:id                  controllers.PostController.getById(id: Long)
 POST    /api/posts/add              controllers.PostController.add
 PUT     /api/posts/update/:id           controllers.PostController.update(id: Long)
 DELETE  /api/posts/delete/:id         controllers.PostController.delete(id: Long)
-GET     /api/posts/status           controllers.PostController.checkStatus()
 
 #users and authentication
 POST /api/auth/register             controllers.AuthenticationController.register
 POST /api/auth/login             controllers.AuthenticationController.login
+GET  /api/auth/testjwt             controllers.AuthenticationController.testAuth
 GET  /api/users                     controllers.AuthenticationController.getAllUsers
 GET  /api/users/:id               controllers.AuthenticationController.getUserById(id:Long)
 

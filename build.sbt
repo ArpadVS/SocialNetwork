@@ -14,6 +14,8 @@ libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "4.0.2"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test
 libraryDependencies += "org.mindrot" % "jbcrypt" % "0.4"
 libraryDependencies += "com.jason-goodwin" %% "authentikat-jwt" % "0.4.5"
+libraryDependencies += "io.spray" %%  "spray-json" % "1.3.6"
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.novalite.praksa.controllers._"

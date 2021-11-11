@@ -1,0 +1,38 @@
+.grid-container {
+	display: grid;
+	align-self: right;
+	grid-template-columns: 400px 400px;
+	margin-left: 40px;
+	float: left;
+}
+
+.grid-item {
+	padding: 10px;
+	font-size: 18px;
+	text-align: left;
+	margin-top: 10px;
+}
+
+.grid-item.nereg, .grid-item.invited{
+	font-size: 12px;
+}
+
+div.imagePicker {
+	height: 200px;
+	width: 200px;
+	border-radius: 50%
+}
+
+#profile_img{
+	height: inherit;
+	width: inherit;
+	object-fit: cover;
+	border-radius: inherit
+}
+
+#imgContainer {
+	float: left;
+	width: 15%;
+	margin-left: 130px; 
+	margin-top: 60px;
+}
